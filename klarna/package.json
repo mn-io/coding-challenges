@@ -1,0 +1,12 @@
+{
+  "name": "klarna",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "challenge1": "cd challenge1;nvm install; node challenge1.js",
+    "challenge2": "cd challenge2;nvm install; node challenge2.js",
+    "challenge3": "cd challenge3;nvm install; node challenge3.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
