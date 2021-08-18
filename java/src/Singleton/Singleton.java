@@ -1,30 +1,22 @@
+package Singleton;
+
 final public class Singleton {
 
-    private final int value;
+    private static volatile Entity instance;
 
-    private static volatile Singleton instance;
-
-    public static Singleton getInstance() {
-        Singleton instanceHelper = instance;
+    public static Entity getInstance() {
+        Entity instanceHelper = instance;
         if (instanceHelper == null) {
             synchronized (Singleton.class) {
                 if (instanceHelper == null) {
-                    instance = instanceHelper = new Singleton();
+                    instance = instanceHelper = new Entity(5);
                 }
             }
         }
         return instanceHelper;
     }
 
-    private Singleton() {
-        value = 5;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static void main(String[] args) {
-        System.out.println(Singleton.getInstance().getValue());
+        System.out.println(Singleton.getInstance().value());
     }
 }
