@@ -2,8 +2,8 @@ package toptal.chess;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 // https://www.reddit.com/r/freelance/comments/4mucmn/i_failed_the_toptal_coding_test/
 public class ChessSolution {
@@ -12,31 +12,65 @@ public class ChessSolution {
     }
 
     private static int solution(Point dest) {
-        Set<Point> visitedPoints = new HashSet<>();
-        Deque<Point> toVisit = new ArrayDeque<>();
+        Map<Point, Point> visitedPointsFromStart = new HashMap<>();
+        Map<Point, Point> visitedPointsFromDest = new HashMap<>();
+        Deque<Point> toVisitFromStart = new ArrayDeque<>();
+        Deque<Point> toVisitFromDest = new ArrayDeque<>();
 
         Point start = new Point(0, 0);
-        toVisit.addLast(start);
+        toVisitFromStart.addLast(start);
+        toVisitFromDest.addLast(dest);
 
-        while (!toVisit.isEmpty()) {
-            Point current = toVisit.removeFirst();
-            System.out.printf("checking %s, queue size: %d%n", current, toVisit.size());
-            if (current.equals(dest)) {
-                System.out.println(" - is matching dest");
-                return current.getLength();
+        while (!toVisitFromStart.isEmpty() || !toVisitFromDest.isEmpty()) {
+            Point currentStart = toVisitFromStart.pollFirst();
+            if (currentStart != null) {
+                System.out.printf("checking from start %s, queue size: %d%n", currentStart, toVisitFromStart.size());
+                int pathLength = getPathLength(start, currentStart, dest, visitedPointsFromDest);
+                if (pathLength >= 0) {
+                    return pathLength;
+                }
+
+                fillQueue(currentStart, toVisitFromStart, visitedPointsFromStart);
             }
 
-            Set<Point> nextPoints = current.getNext();
-            for (Point nextPoint : nextPoints) {
-                boolean added = visitedPoints.add(nextPoint);
-                if (!added) {
-                    continue;
+            Point currentDest = toVisitFromDest.pollFirst();
+            if (currentDest != null) {
+                System.out.printf("checking from dest %s, queue size: %d%n", currentDest, visitedPointsFromDest.size());
+                int pathLength = getPathLength(dest, currentDest, start, visitedPointsFromStart);
+                if (pathLength >= 0) {
+                    return pathLength;
                 }
-                toVisit.addLast(nextPoint);
+
+                fillQueue(currentDest, toVisitFromDest, visitedPointsFromDest);
             }
         }
 
         return -1;
+    }
+
+    private static int getPathLength(Point start, Point currentStart, Point dest, Map<Point, Point> visitedPointsFromDest) {
+        if (dest.equals(currentStart)) {
+            return currentStart.getLength();
+        }
+
+        if (visitedPointsFromDest.containsKey(currentStart) && !currentStart.equals(start)) {
+            int currentLength = currentStart.getLength();
+            int lengthFromOtherQueue = visitedPointsFromDest.get(currentStart).getLength();
+            return currentLength + lengthFromOtherQueue;
+        }
+
+        return -1;
+    }
+
+    private static void fillQueue(Point current, Deque<Point> toVisit, Map<Point, Point> visitedPoints) {
+        for (Point nextPoint : current.getNext()) {
+            boolean hasKey = visitedPoints.containsKey(nextPoint);
+            if (hasKey) {
+                continue;
+            }
+            visitedPoints.put(nextPoint, nextPoint);
+            toVisit.addLast(nextPoint);
+        }
     }
 
     private static void assertEquals(int expected, int actual) {
