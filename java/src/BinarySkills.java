@@ -1,8 +1,28 @@
 public class BinarySkills {
 
-    // x * Math.pow(2,i) = x << i
 
+    //In Java sind alle Ganzzahl-Datentypen vorzeichenbehaftet,
+    // und die Operatoren << und >> führen arithmetische Verschiebungen durch.
+    // In Java gibt es zusätzlich den Operator >>>, der eine logische Rechtsverschiebung durchführt.
+    // Da logische und arithmetische Linksverschiebungen identisch sind, gibt es keinen <<<-Operator.
+
+    // >>>  The only difference is that the empty spaces in the left are filled with 0 irrespective of whether
+    // the number is positive or negative. Therefore, the result will always be a positive integer.
     public static void main(String[] args) {
+        for (int i = -5; i < 5; i++) {
+            int result = i >> 1;
+            int result2 = i >>> 1;
+            System.out.println(i + ": " + result + " | " + result2);
+        }
+    }
+
+    public static void not(String[] args) {
+        int i = ~1;
+        System.out.println(i);
+    }
+
+    // x * Math.pow(2,i) = x << i
+    public static void mathEquals(String[] args) {
         for (int i = 0; i < 5; i++) {
             for (int x = 0; x < 5; x++) {
                 int result1 = (int) (x * Math.pow(2, i));
