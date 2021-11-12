@@ -10,7 +10,7 @@ public class SplitArray {
         int max = ints.length;
         for (int potentialSplitValue = 1; potentialSplitValue < max - 1; potentialSplitValue++) {
             int valueCounter = 0;
-            for (int lowerI = 0; lowerI < potentialSplitValue; lowerI++) {
+            for (int lowerI = 0; lowerI <= potentialSplitValue; lowerI++) {
                 System.out.print(ints[lowerI]);
                 if (x == ints[lowerI]) {
                     valueCounter++;
