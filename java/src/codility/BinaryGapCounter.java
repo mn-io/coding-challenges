@@ -10,6 +10,32 @@ public class BinaryGapCounter {
     }
 
     public static int solution(int N) {
+        char[] binary = toBinaryString(N).toCharArray();
+
+        int maxCounter = 0;
+        int tmpCounter = 0;
+
+        boolean isInGap = false;
+        for (char c : binary) {
+            System.out.print(c);
+            if (!isInGap && c == '1') {
+                isInGap = true;
+                continue;
+            }
+            if (isInGap && c == '0') {
+                tmpCounter++;
+                continue;
+            }
+            if (isInGap && c == '1') {
+                maxCounter = Math.max(maxCounter, tmpCounter);
+                isInGap = false;
+            }
+        }
+
+        return maxCounter;
+    }
+
+    public static int solution1(int N) {
         String binary = toBinaryString(N);
         int maxCount = 0;
 
@@ -25,7 +51,7 @@ public class BinaryGapCounter {
             }
 
             inner:
-            for (int j = i+1; j < chars.length; j++) {
+            for (int j = i + 1; j < chars.length; j++) {
                 char c1 = chars[j];
                 if (c1 == '0') {
                     count++;

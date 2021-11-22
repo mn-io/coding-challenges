@@ -1,5 +1,6 @@
 package codility;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 // https://app.codility.com/programmers/lessons/6-sorting/distinct/
@@ -15,7 +16,22 @@ public class DistinctValues {
         }
     }
 
-    private static int solution(int[] in) {
+    public static int solution(int[] in) {
+        Arrays.sort(in);
+
+        int prevI = 0;
+        int counter = 0;
+        for (int i : in) {
+            if (prevI != i) {
+                counter++;
+            }
+            prevI = i;
+        }
+
+        return counter;
+    }
+
+    private static int solution1(int[] in) {
         HashSet<Integer> distinctValues = new HashSet<>();
         for (int i : in) {
             distinctValues.add(i);
